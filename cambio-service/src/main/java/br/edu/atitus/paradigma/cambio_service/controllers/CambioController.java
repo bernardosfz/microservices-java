@@ -1,6 +1,5 @@
 package br.edu.atitus.paradigma.cambio_service.controllers;
 
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +25,13 @@ public class CambioController {
 	
 	
 	@GetMapping("/{fator}/{origem}/{destino}")
-	public ResponseEntity<Optional<CambioEntity>> getCambio(
+	public ResponseEntity<CambioEntity> getCambio(
 			@PathVariable double fator,
 			@PathVariable String origem,	
-			@PathVariable String destino) {
+			@PathVariable String destino) throws Exception{
 		
-		Optional<CambioEntity> cambio = cambioRepository.findByOrigemAndDestino(origem, destino);
-				
+		CambioEntity cambio = cambioRepository.findByOrigemAndDestino(origem, destino).orElseThrow(() -> new Exception("Moedas não existentes"));
+
 		return ResponseEntity.ok(cambio);
 	}
 	
