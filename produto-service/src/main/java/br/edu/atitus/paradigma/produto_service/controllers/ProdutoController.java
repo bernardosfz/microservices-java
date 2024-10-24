@@ -2,7 +2,6 @@ package br.edu.atitus.paradigma.produto_service.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +35,8 @@ public class ProdutoController {
 			@PathVariable Integer idProduto,
 			@PathVariable String moeda) throws Exception{
 		
-		ProdutoEntity produto = produtoRepository.findById(idProduto).orElseThrow(() -> new Exception("Produto não encontrado!"));
-		
-		CambioResponse cambio = cambioClient.getCambio(produto.getValor(), "USD", moeda);
+		ProdutoEntity produto = produtoRepository.findById(idProduto).orElseThrow(() -> new Exception("Produto não encontrado"));
+		CambioResponse cambio = cambioClient.getCambio(produto.getValor(),"USD",moeda);
 		
 		produto.setValorConvertido(cambio.getValorConvertido());
 		produto.setAmbiente("Produto-Service run in port: " + porta + " - " + cambio.getAmbiente());

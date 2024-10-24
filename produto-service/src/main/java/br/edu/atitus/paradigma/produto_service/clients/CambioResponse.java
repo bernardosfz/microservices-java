@@ -8,7 +8,6 @@ public class CambioResponse {
 	private double fator;
 	private double valorConvertido;
 	private String ambiente;
-	
 	public Integer getId() {
 		return id;
 	}
@@ -47,4 +46,5 @@ public class CambioResponse {
 	}
 	
 	
+
 }
