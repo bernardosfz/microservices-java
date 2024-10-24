@@ -79,7 +79,7 @@ public class CambioController {
 		CambioEntity cambio = cambioRepository.findByOrigemAndDestino(origem, destino)
 				.orElseThrow(() -> new Exception("Câmbio não encontrado para esta origem e este destino"));
 		cambio.setValorConvertido(valor * cambio.getFator());
-		cambio.setAmbiente("Cambio-Service run in port: " + porta + "(From DB)");
+		cambio.setAmbiente("Cambio-Service run in port: " + porta);
 		return ResponseEntity.ok(cambio);
 	}
 
