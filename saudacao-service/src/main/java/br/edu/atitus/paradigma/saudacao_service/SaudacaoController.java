@@ -14,12 +14,6 @@ import br.edu.atitus.paradigma.saudacao_service.configs.SaudacaoConfig;
 @RequestMapping("/saudacao-service")
 public class SaudacaoController {
 	
-//	@Value("${saudacao-service.saudacao}")
-//	private String saudacao;
-//	
-//	@Value("${saudacao-service.nome-padrao}")
-//	private String nomePadrao;
-	
 	private final SaudacaoConfig saudacaoConfig;
 	
 	public SaudacaoController(SaudacaoConfig saudacaoConfig) {
@@ -33,10 +27,11 @@ public class SaudacaoController {
 			@RequestParam(required = false) String nome,
 			@PathVariable(required = false) String nomePath) {
 		
-		if (nome == null) 
-			nome = nomePath == null ? saudacaoConfig.getNomePadrao() : nomePath;
-		
 		String template = "%s %s!!!";
+		if (nome == null) 
+			nome = nomePath != null ? nomePath : saudacaoConfig.getNomePadrao();
+		
+		
 		return ResponseEntity.ok(String.format(template, saudacaoConfig.getSaudacao(), nome));
 	}
 

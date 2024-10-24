@@ -17,6 +17,9 @@ public class ApiGatewayConfig {
 				.route(route -> route
 						.path("/produto-service/**")
 						.uri("lb://produto-service"))
+				.route(route -> route
+						.path("/saudacao-service/**")
+						.uri("lb://saudacao-service"))
 				.build();
 	}
 }
