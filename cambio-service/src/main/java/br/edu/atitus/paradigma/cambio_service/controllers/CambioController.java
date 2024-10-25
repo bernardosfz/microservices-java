@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,9 +40,11 @@ public class CambioController {
 	@GetMapping("/{valor}/{origem}/{destino}")
 	@CircuitBreaker(name = "cotacaoClient", fallbackMethod = "getCambioFromDB")
 	public ResponseEntity<CambioEntity> getCambio(@PathVariable double valor, @PathVariable String origem,
-			@PathVariable String destino) throws Exception {
+			@PathVariable String destino, @RequestHeader("Usuario") String usuario) throws Exception {
 
 		String keyCambioCache = origem + "_" + destino;
+		
+		System.out.println("Requisição feita pelo usuário: " + usuario);
 
 		CambioEntity cambio = cacheManager.getCache(CAMBIO_CACHE).get(keyCambioCache, CambioEntity.class);
 		if (cambio == null) {
@@ -51,6 +54,7 @@ public class CambioController {
 
 		cambio.setValorConvertido(valor * cambio.getFator());
 		cambio.setAmbiente("Cambio-Service run in port: " + porta);
+		
 		return ResponseEntity.ok(cambio);
 	}
 
@@ -70,6 +74,7 @@ public class CambioController {
 			fator = fatorOrigem / fatorDestino;
 		}
 		cambio.setFator(fator);
+		
 		return cambio;
 	}
 
@@ -80,6 +85,7 @@ public class CambioController {
 				.orElseThrow(() -> new Exception("Câmbio não encontrado para esta origem e este destino"));
 		cambio.setValorConvertido(valor * cambio.getFator());
 		cambio.setAmbiente("Cambio-Service run in port: " + porta);
+		
 		return ResponseEntity.ok(cambio);
 	}
 

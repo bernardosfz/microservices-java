@@ -13,12 +13,15 @@ public class ApiGatewayConfig {
 		return builder.routes()
 				.route(route -> route
 						.path("/cambio-service/**")
+						.filters(f -> f.addRequestHeader("Usuario", "Bernardo Sozo Fattini"))
 						.uri("lb://cambio-service"))
 				.route(route -> route
 						.path("/produto-service/**")
+						.filters(f -> f.addRequestHeader("Usuario", "Bernardo Sozo Fattini"))
 						.uri("lb://produto-service"))
 				.route(route -> route
 						.path("/saudacao-service/**")
+						.filters(f -> f.addRequestHeader("Usuario", "Bernardo Sozo Fattini"))
 						.uri("lb://saudacao-service"))
 				.build();
 	}
